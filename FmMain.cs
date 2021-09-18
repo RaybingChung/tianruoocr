@@ -1112,7 +1112,8 @@ namespace TrOCR
 				}
                 var data = string.Concat("client=gtx&sl=", text3, "&tl=", text4, "&dt=t&q=",
                     HttpUtility.UrlEncode(text)?.Replace("+", "%20"));
-                var html = CommonHelper.PostStrData("https://translate.google.cn/translate_a/single", data);
+                // var html = CommonHelper.PostStrData("https://translate.google.cn/translate_a/single", data);
+                var html = CommonHelper.PostStrData("https://translate.googleapis.com/translate_a/single", data);
 
 				var jArray = (JArray)JsonConvert.DeserializeObject(html);
 				var count = ((JArray)jArray[0]).Count;
@@ -1121,9 +1122,10 @@ namespace TrOCR
 					text2 += jArray[0][i][0].ToString();
 				}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				text2 = "[谷歌接口报错]：\r\n1.网络错误或者文本过长。\r\n2.谷歌接口可能对于某些网络不能用，具体不清楚。可以尝试挂VPN试试。\r\n3.这个问题我没办法修复，请右键菜单更换百度、腾讯翻译接口。";
+                text2 = text2 + e.ToString();
 			}
 			return text2;
 		}
